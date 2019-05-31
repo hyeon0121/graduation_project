@@ -15,6 +15,7 @@ public class Global {
 	// temperature array
     public static int temperatures[] = new int[10];
     public static int port = 5683;
+	public static int random;
 
     public static int[] getTemperatures() {
         return temperatures;

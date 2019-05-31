@@ -42,15 +42,17 @@ public class DemoApplication {
 			int i = 0;
 			int[] numbers = Global.getTemperatures();
 
-			while (i++ < 10) {
+			while (i < 10) {
 				int input = numbers[i];
 				state = String.valueOf(input);
 
 				Thread.sleep(1000);
+
+				i++;
 			}
 
 			// 2-3. Set Device Event
-			device.ControlEvent(state);
+			//device.ControlEvent(state);
 		}
 
 	}

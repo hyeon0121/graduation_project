@@ -13,6 +13,8 @@ import org.json.JSONObject;
 //observer
 import org.eclipse.californium.core.coap.CoAP.Type;
 
+import java.util.Random;
+
 public class ConnectResource extends CoapResource {
 
 	
@@ -73,7 +75,13 @@ public class ConnectResource extends CoapResource {
 			
 			//2-2. Make a Response value with JSONObject
 			JSONObject json = new JSONObject();
-			json.put("Response", "sucess");
+			Random generator = new Random();
+
+			Global.random = generator.nextInt(100) + 1;
+
+
+			json.put("Response", Global.random);
+
 			String payload = json.toString();
 			
 			//2-3. Response Values to Client
@@ -94,14 +102,7 @@ public class ConnectResource extends CoapResource {
 			 		3-2. Add DeviceID Resource to Control Resource
 			 */
 		
-			//3-1. Add DeviceID Resource to Report Resource : report/Device1
-			// * Fill in here
-		    Global.getReport_resource().add(new ReportResource(id));
-			
-			//3-2. Add DeviceID Resource to Control Resource : control/Device1
-			// * Fill in here
-		    Global.getControl_resource().add(new ControlResource(id));
-		    
+
 		    
 		    if(mode.equals("push")) {
 		    	ObserveResource obs_resource =new ObserveResource(id);
