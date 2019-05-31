@@ -1,12 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.StaticHandler;
-import com.example.demo.global.DeviceInfo;
 import com.example.demo.global.Global;
-import com.example.demo.global.Student;
+import com.example.demo.model.Student;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,9 +36,13 @@ public class CoAPController {
             e.printStackTrace();
         }
 
+        Random generator = new Random();
+
+        int random = generator.nextInt(100) + 1;
+
         JSONObject json = new JSONObject();
         json.put("url", url);
-        json.put("message", "success");
+        json.put("message", random);
 
         return ResponseEntity.ok()
                 .body(json.toString());
