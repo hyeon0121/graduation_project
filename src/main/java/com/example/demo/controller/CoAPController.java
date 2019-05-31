@@ -2,8 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.global.Global;
 import com.example.demo.model.Student;
+import com.example.demo.service.StudentService;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +20,10 @@ import java.util.Random;
 public class CoAPController {
     private static Map<Integer, Student> studentRepo = new HashMap<>();
 
-    @RequestMapping(value = "/url", method = RequestMethod.GET)
+    @Autowired
+    StudentService studentService;
+
+    @RequestMapping(value = "/conn", method = RequestMethod.GET)
     @ResponseBody
     public  ResponseEntity<Object> getconnectURL() throws JSONException {
         //studentRepo.put(1, student);
@@ -36,19 +41,15 @@ public class CoAPController {
             e.printStackTrace();
         }
 
-        Random generator = new Random();
-
-        int random = generator.nextInt(100) + 1;
-
         JSONObject json = new JSONObject();
         json.put("url", url);
-        json.put("message", random);
+        json.put("message", Global.random);
 
         return ResponseEntity.ok()
                 .body(json.toString());
     }
 
-    @RequestMapping(value = "/observer", method = RequestMethod.GET)
+    @RequestMapping(value = "/obs", method = RequestMethod.GET)
     @ResponseBody
     public  ResponseEntity<Object> getobsURL() throws JSONException {
         int port = Global.port;
