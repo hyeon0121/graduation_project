@@ -14,9 +14,8 @@ public class CoAPServerBase {
 		 * 
 		 * 1. Create CoAP Server Instance
 		 * 2. Add Resources 
-		 * 	2-1. Connect Resource 
-		 * 	2-2. Control Resource 
-		 * 	2-3. Report Resource 
+		 * 	2-1. Connect Resource
+		 * 	2-2. Observe Resource
 		 * 3. Run CoAP Server
 		 */
 		
@@ -29,23 +28,10 @@ public class CoAPServerBase {
 		
 		server.add(new ConnectResource("connect"));
 
-		// 2-2. Control Resource
-		CoapResource control_res = new CoapResource("control");
-		// Set Resource as global variable
-		Global.setControl_resource(control_res);
-		server.add(control_res);
-
-		// 2-3. Report Resource
-		CoapResource report_res = new CoapResource("report");
-		// Set Resource as global variable
-		Global.setReport_resource(report_res);
-		server.add(report_res);
-
 		//2-4. Observe
-		CoapResource observe_res=new CoapResource("obs");
+		CoapResource observe_res = new CoapResource("obs");
 		Global.setObserve_resource(observe_res);
 		server.add(observe_res);
-		
 
 		// 3. Run CoAP Server
 		server.start();
