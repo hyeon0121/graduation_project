@@ -67,10 +67,10 @@ public class CoAPController {
 
         Random generator = new Random();
 
-        int temps[] = new int[10];
+        int temps[] = new int[5];
         int max = 0;
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             temps[i] = generator.nextInt(20) + 20;
             if (temps[i] > max) {
                 max = temps[i];
@@ -78,6 +78,7 @@ public class CoAPController {
         }
 
         Global.setTemperatures(temps);
+
 
         JSONObject json = new JSONObject();
         json.put("url", url);
