@@ -46,7 +46,6 @@ public class ConnectResource extends CoapResource {
 		 * 
 		 */
 		
-		
 		try {
 			//2-1. JSON Parsing requested value from Device(Client)
 			
@@ -55,11 +54,11 @@ public class ConnectResource extends CoapResource {
 			
 			// *() Fill in here 
 			// From Client, JSONObject key "DeviceID" Parsing & save local variable id 
-			id=parsedObject.getString("DeviceID");
+			id = parsedObject.getString("DeviceID");
 			// From Client, JSONObject key "State" Parsing & save local variable state
-			state=parsedObject.getString("State");
+			state = parsedObject.getString("State");
 			// From Client, JSONObject key "Mode" Parsing & save local variable mode
-			mode=parsedObject.getString("Mode");
+			mode = parsedObject.getString("Mode");
 			
 			
 			System.out.println("CONNECT DEVICE");
@@ -68,10 +67,6 @@ public class ConnectResource extends CoapResource {
 			System.out.println("DEVICE State:" + state);
 			System.out.println("DEVICE Mode:" + mode);
 			System.out.println("=========");
-			
-	
-			
-
 			
 			//2-2. Make a Response value with JSONObject
 			JSONObject json = new JSONObject();
@@ -87,25 +82,21 @@ public class ConnectResource extends CoapResource {
 			//2-3. Response Values to Client
 			// * () Fill in here
 			exchange.respond(ResponseCode.CONTENT, payload , MediaTypeRegistry.APPLICATION_JSON);
-			
-			
+
+
 			
 			//2-4. Requested value Save into Data Structure
 			DeviceInfo dev_info = new DeviceInfo(id, state, mode);
 			Global.device_list.put(id, dev_info);
-			
 
-			
 			/*
 			 * 	3.Add Resources 
 			 		3-1. Add DeviceID Resource to Report Resource
 			 		3-2. Add DeviceID Resource to Control Resource
 			 */
-		
 
-		    
 		    if(mode.equals("push")) {
-		    	ObserveResource obs_resource =new ObserveResource(id);
+		    	ObserveResource obs_resource = new ObserveResource(id);
 		    	Global.getObserve_resource().add(obs_resource);
 		    	dev_info.setResource(obs_resource);
 		    }

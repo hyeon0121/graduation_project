@@ -48,10 +48,10 @@ public class ObserveResource extends CoapResource {
 			
 			//fill () in here
 			//From Main, get Device Event 
-			String event = device.getEvent();
+			int event = device.getTemperatures();
 
 			JSONObject json = new JSONObject();
-			json.put("Control", event);
+			json.put("Temperature", event);
 			String payload = json.toString();
 			exchange.respond(ResponseCode.CONTENT, payload, MediaTypeRegistry.APPLICATION_JSON);
 
