@@ -16,16 +16,15 @@ public class DeviceInfo {
 	String deviceID;
 	String mode; // pull, push
 	String state; // Current Device State on, off
-	String event; // When an event is requested
+	int event; // When an event is requested
 	boolean isEvent;
-	int[] temperatures;
+	int temperatures;
 
 	public DeviceInfo(String deviceID, String state, String mode) {
 		this.deviceID = deviceID;
 		this.state = state;
 		this.mode = mode;
 	}
-
 
 	public String getDeviceID() {
 		return deviceID;
@@ -59,11 +58,11 @@ public class DeviceInfo {
 		this.isEvent = isEvent;
 	}
 
-	public String getEvent() {
+	public int getEvent() {
 		return event;
 	}
 
-	public void setEvent(String event) {
+	public void setEvent(int event) {
 		this.event = event;
 	}
 
@@ -85,16 +84,16 @@ public class DeviceInfo {
 		this.isEvent = isEvent;
 	}
 
-	public int[] getTemperatures() {
+	public int getTemperatures() {
 		return temperatures;
 	}
 
-	public void setTemperatures(int[] temperatures) {
+	public void setTemperatures(int temperatures) {
 		this.temperatures = temperatures;
 	}
 
-	public boolean ControlEvent(String newState) {
-		this.event = newState;
+	public boolean TemperatureEvent(int newTemp) {
+		this.temperatures = newTemp;
 		if (this.mode.equals("pull")) {
 			this.isEvent = true;
 		}
