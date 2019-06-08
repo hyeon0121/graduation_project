@@ -8,12 +8,10 @@ import org.eclipse.californium.core.CoapServer;
 
 
 public class Global {
-	
-	public static CoapResource report_resource;
-	public static CoapResource control_resource;
+	public static CoapResource temperature_resource;
 
 	// temperature array
-    public static int temperatures[] = new int[10];
+    public static int temperatures[];
     public static int port = 5683;
 	public static int random;
 
@@ -35,29 +33,18 @@ public class Global {
 	public static void setObserve_resource(CoapResource observe_resource) {
 		Global.observe_resource = observe_resource;
 	}
-	
 
 	// device_info
 	public static HashMap<String, DeviceInfo> device_list = new HashMap<String, DeviceInfo>();
 
 
-
-	public static CoapResource getReport_resource() {
-		return report_resource;
+	public static CoapResource getTemperature_resource() {
+		return temperature_resource;
 	}
 
-	public static  void setReport_resource(CoapResource report_resource) {
-		Global.report_resource = report_resource;
+	public static void setTemperature_resource(CoapResource temperature_resource) {
+		Global.temperature_resource = temperature_resource;
 	}
-
-	public static CoapResource getControl_resource() {
-		return control_resource;
-	}
-
-	public static void setControl_resource(CoapResource control_resource) {
-		Global.control_resource = control_resource;
-	}
-
 
 	public static HashMap<String, DeviceInfo> getDevice_list() {
 		return device_list;
