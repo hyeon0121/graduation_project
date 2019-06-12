@@ -1,7 +1,5 @@
-package com.example.demo;
+package com.example.demo.coapserver;
 
-import com.example.demo.global.Global;
-import com.example.demo.resource.ConnectResource;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.CoapServer;
 

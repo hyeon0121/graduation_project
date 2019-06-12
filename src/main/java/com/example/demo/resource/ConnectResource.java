@@ -1,7 +1,7 @@
-package com.example.demo.resource;
+package com.example.demo.coapserver.resource;
 
-import com.example.demo.global.DeviceInfo;
-import com.example.demo.global.Global;
+import com.example.demo.coapserver.global.DeviceInfo;
+import com.example.demo.coapserver.global.Global;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
@@ -11,7 +11,6 @@ import org.json.JSONObject;
 
 
 //observer
-import org.eclipse.californium.core.coap.CoAP.Type;
 
 import java.util.Random;
 
@@ -45,6 +44,7 @@ public class ConnectResource extends CoapResource {
 			2-4. Requested value Save into Data Structure
 		 * 
 		 */
+
 		
 		try {
 			//2-1. JSON Parsing requested value from Device(Client)
@@ -72,10 +72,10 @@ public class ConnectResource extends CoapResource {
 			JSONObject json = new JSONObject();
 			Random generator = new Random();
 
-			Global.random = generator.nextInt(100) + 1;
+			Global.message = generator.nextInt(100) + 1;
 
 
-			json.put("Response", Global.random);
+			json.put("Response", Global.message);
 
 			String payload = json.toString();
 			

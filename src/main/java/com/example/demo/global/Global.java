@@ -1,10 +1,8 @@
-package com.example.demo.global;
+package com.example.demo.coapserver.global;
 
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.californium.core.CoapResource;
-import org.eclipse.californium.core.CoapServer;
 
 
 public class Global {
@@ -13,9 +11,14 @@ public class Global {
 	// temperature array
     public static int temperatures[];
     public static int port = 5683;
-	public static int random;
+	public static int message;
+	public static int max;
+	public static String deviceId = "1";
 
-    public static int[] getTemperatures() {
+	private static HashMap<String, String> studentRepo = new HashMap<>();
+
+
+	public static int[] getTemperatures() {
         return temperatures;
     }
 
