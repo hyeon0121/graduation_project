@@ -2,8 +2,8 @@ package com.example.demo.model;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("student")
-public class Student {
+@Alias("history")
+public class History {
     String sname;
     String sno;
     String sip;
@@ -61,7 +61,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "History{" +
                 "sname='" + sname + '\'' +
                 ", sno='" + sno + '\'' +
                 ", sip='" + sip + '\'' +
