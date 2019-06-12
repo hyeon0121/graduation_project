@@ -2,41 +2,38 @@ package com.example.demo;
 
 import com.example.demo.global.DeviceInfo;
 import com.example.demo.global.Global;
-import org.apache.catalina.Server;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
-import java.util.Random;
-import java.util.Scanner;
+import javax.sql.DataSource;
 
+@MapperScan(value={"com.example.demo.mapper"})
 @SpringBootApplication
 public class DemoApplication {
 
 	public static void main(String[] args) throws InterruptedException {
 		SpringApplication.run(DemoApplication.class, args);
 
-		/*
-		 * 1. Run CoAP Server
-		 * 2. Process user Event
-		 *
-		 */
-
-		// 2. Run CoAP Server
+		// Run CoAP Server
 		new CoAPServerBase();
 
-		// 2. Process user Event
+		// Process user Event
 		while (true) {
 
-			// 2-1. Get Device ID
-			DeviceInfo device = Global.device_list.get("1");
+			// Get Device ID
+			DeviceInfo device = Global.device_list.get(Global.deviceId);
 			if (device == null) {
 				Thread.sleep(1000);
 				continue;
 			}
 
-			System.out.println(device.getDeviceID());
+			//System.out.println(device.getDeviceID());
 
-			// 2-2. Get Event State
 			if (Global.getTemperatures() != null) {
 				int i = 0;
 				int[] numbers = Global.getTemperatures();
@@ -55,6 +52,15 @@ public class DemoApplication {
 
 		}
 
+	}
+
+	@Bean
+	public SqlSessionFactory sqlSessionFactory(DataSource dataSource)throws Exception{
+		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+		sessionFactory.setDataSource(dataSource);
+		sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mappers/*.xml"));
+
+		return sessionFactory.getObject();
 	}
 
 }

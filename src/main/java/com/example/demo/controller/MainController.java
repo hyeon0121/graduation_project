@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.global.Global;
-import com.example.demo.model.Student;
-import com.example.demo.service.StudentService;
+import com.example.demo.model.History;
+import com.example.demo.service.HistoryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +19,14 @@ import java.util.Random;
 
 @CrossOrigin
 @RestController
-public class CoAPController {
+public class MainController {
 
     @Autowired
-    private StudentService studentMapper;
+    private HistoryService historyService;
 
     @RequestMapping(value = "/conn", method = RequestMethod.GET)
     @ResponseBody
     public  ResponseEntity<Object> getConnectURL() throws JSONException, SocketException {
-        //studentRepo.put(1, student);
         int port = Global.port;
 
         String ip = null;
@@ -110,11 +109,11 @@ public class CoAPController {
 
     @RequestMapping(value = "/score", method = RequestMethod.POST)
     @ResponseBody
-    public  ResponseEntity<String> insertTestResult(@RequestBody Student student) throws Exception {
+    public  ResponseEntity<String> insertTestResult(@RequestBody History student) throws Exception {
 
         System.out.println(student.toString());
 
-        studentMapper.insertStudent(student);
+        historyService.insertHistory(student);
         System.out.println(LocalDateTime.now());
 
         return new ResponseEntity<>("success", HttpStatus.OK);
