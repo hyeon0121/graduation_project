@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.demo.mapper.HistoryMapper">
+
+    <insert id="insertHistory" parameterType="com.example.demo.model.History">
+        INSERT INTO history (sno, sname, sip, sport, msg_score, max_score)
+        VALUES (#{sno}, #{sname}, #{sip}, #{sport}, #{msgScore}, #{maxScore})
+    </insert>
+
+</mapper>
