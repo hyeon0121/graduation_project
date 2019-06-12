@@ -1,7 +1,7 @@
-package com.example.demo.coapserver.resource;
+package com.example.demo.resource;
 
-import com.example.demo.coapserver.global.DeviceInfo;
-import com.example.demo.coapserver.global.Global;
+import com.example.demo.global.DeviceInfo;
+import com.example.demo.global.Global;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
@@ -15,44 +15,19 @@ import org.json.JSONObject;
 import java.util.Random;
 
 public class ConnectResource extends CoapResource {
-
 	
-	/*
-	 * Start Connect Resource
-	 * 
-	 * 1. Apply "connect"resource through Constructor 
-	 * 2. Post Handler
-	 * 3. Add Resources 
-	 * 
-	 */ 
-	
-	
-	//1. Apply "connect"resource through Constructor 
 	public ConnectResource(String name) {
 		super(name);
 	}
-	
-	
 
 	@Override
 	public void handlePOST(CoapExchange exchange) {
-		/*
-		 * 2. Post Handler
-			2-1. JSON Parsing requested value from Device(Client)
-			2-2. Make a Response value with JSONObject
-			2-3. Response Values to Client
-			2-4. Requested value Save into Data Structure
-		 * 
-		 */
-
 		
 		try {
-			//2-1. JSON Parsing requested value from Device(Client)
 			
 			String id, state, mode;
 			JSONObject parsedObject = new JSONObject(exchange.getRequestText().toString());
-			
-			// *() Fill in here 
+
 			// From Client, JSONObject key "DeviceID" Parsing & save local variable id 
 			id = parsedObject.getString("DeviceID");
 			// From Client, JSONObject key "State" Parsing & save local variable state
@@ -68,7 +43,7 @@ public class ConnectResource extends CoapResource {
 			System.out.println("DEVICE Mode:" + mode);
 			System.out.println("=========");
 			
-			//2-2. Make a Response value with JSONObject
+			// Make a Response value with JSONObject
 			JSONObject json = new JSONObject();
 			Random generator = new Random();
 
@@ -79,21 +54,14 @@ public class ConnectResource extends CoapResource {
 
 			String payload = json.toString();
 			
-			//2-3. Response Values to Client
-			// * () Fill in here
+			// Response Values to Client
 			exchange.respond(ResponseCode.CONTENT, payload , MediaTypeRegistry.APPLICATION_JSON);
 
 
-			
-			//2-4. Requested value Save into Data Structure
+			// Requested value Save into Data Structure
 			DeviceInfo dev_info = new DeviceInfo(id, state, mode);
 			Global.device_list.put(id, dev_info);
 
-			/*
-			 * 	3.Add Resources 
-			 		3-1. Add DeviceID Resource to Report Resource
-			 		3-2. Add DeviceID Resource to Control Resource
-			 */
 
 		    if(mode.equals("push")) {
 		    	ObserveResource obs_resource = new ObserveResource(id);

@@ -11,22 +11,10 @@ import org.json.JSONObject;
 
 public class ObserveResource extends CoapResource {
 
-	/*
-	 * Start Observe Resource
-	 * 
-	 * 1. Apply "observe"resource through Constructor 2. Get Handler
-	 * 
-	 */
-
-	/*
-	 * 1. Apply "observe"resource through Constructor 1-1. ObserverSetting 1-2.
-	 * Observe Notification type
-	 */
 	public ObserveResource(String name) {
 		super(name);
-		//fill () in here
+
 		// enable observing
-		
 		setObservable(true);
 		
 		// configure the notification type to CONs
@@ -34,19 +22,13 @@ public class ObserveResource extends CoapResource {
 		getAttributes().setObservable(); // mark observable in the Link-Format
 	}
 
-	/*
-	 * 2. Get Handler 2-1. Search DeviceID through Client's URL. 2-2. Search
-	 * DeviceID value from Data Structure 2-3. Make a Response value with JSONObject
-	 * & Get Event 2-4. Response Values to Client
-	 */
 	@Override
 	public void handleGET(CoapExchange exchange) {
 
 		try {
 			String id = getName();
 			DeviceInfo device = Global.device_list.get(id);
-			
-			//fill () in here
+
 			//From Main, get Device Event 
 			int event = device.getTemperatures();
 
