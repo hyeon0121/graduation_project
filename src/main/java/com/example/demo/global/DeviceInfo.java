@@ -4,14 +4,6 @@ import com.example.demo.resource.ObserveResource;
 
 public class DeviceInfo {
 
-	/*
-	 * Data Structure
-	 * 
-	 * 1. Device Information 2. Event Control
-	 * 
-	 * 
-	 */
-
 	// 1. Device Information
 	String deviceID;
 	String mode; // pull, push

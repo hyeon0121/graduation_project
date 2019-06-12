@@ -1,4 +1,4 @@
-package com.example.demo.coapserver.global;
+package com.example.demo.global;
 
 import java.util.HashMap;
 
@@ -8,15 +8,11 @@ import org.eclipse.californium.core.CoapResource;
 public class Global {
 	public static CoapResource temperature_resource;
 
-	// temperature array
     public static int temperatures[];
     public static int port = 5683;
-	public static int message;
-	public static int max;
+	public static int message; // connect test answer
+	public static int max; // observe test answer
 	public static String deviceId = "1";
-
-	private static HashMap<String, String> studentRepo = new HashMap<>();
-
 
 	public static int[] getTemperatures() {
         return temperatures;
@@ -26,9 +22,7 @@ public class Global {
         Global.temperatures = temperatures;
     }
 
-    //* �߰�
 	public static CoapResource observe_resource;
-	//* Getter Setter �߰�
 	public static CoapResource getObserve_resource() {
 		return observe_resource;
 	}
@@ -37,7 +31,6 @@ public class Global {
 		Global.observe_resource = observe_resource;
 	}
 
-	// device_info
 	public static HashMap<String, DeviceInfo> device_list = new HashMap<String, DeviceInfo>();
 
 
