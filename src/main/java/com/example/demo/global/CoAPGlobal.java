@@ -9,7 +9,8 @@ import java.util.HashMap;
 import org.eclipse.californium.core.CoapResource;
 
 
-public class Global {
+public class CoAPGlobal {
+	// CoAP Client Scenario Test
 	public static CoapResource temperature_resource;
 
     public static int temperatures[];
@@ -23,7 +24,7 @@ public class Global {
     }
 
     public static void setTemperatures(int[] temperatures) {
-        Global.temperatures = temperatures;
+        CoAPGlobal.temperatures = temperatures;
     }
 
 	public static CoapResource observe_resource;
@@ -32,7 +33,7 @@ public class Global {
 	}
 
 	public static void setObserve_resource(CoapResource observe_resource) {
-		Global.observe_resource = observe_resource;
+		CoAPGlobal.observe_resource = observe_resource;
 	}
 
 	public static HashMap<String, DeviceInfo> device_list = new HashMap<String, DeviceInfo>();
@@ -43,7 +44,7 @@ public class Global {
 	}
 
 	public static void setTemperature_resource(CoapResource temperature_resource) {
-		Global.temperature_resource = temperature_resource;
+		CoAPGlobal.temperature_resource = temperature_resource;
 	}
 
 	public static HashMap<String, DeviceInfo> getDevice_list() {
@@ -51,22 +52,23 @@ public class Global {
 	}
 
 	public static void setDevice_list(HashMap<String, DeviceInfo> device_list) {
-		Global.device_list = device_list;
+		CoAPGlobal.device_list = device_list;
 	}
 
-	// CoAP Client put, post, delete Test
+	// CoAP Client Unit Test
 	public static String url;
+	public static int countMethod = 0;
 	public static String methods[] = {"PUT", "POST", "DELETE"};
 	public static int check[] = {0, 0, 0};
 	public static int putValue;
 	public static int postValue;
-	public static int methodScore = 30;
+	public static int methodScore = 60;
 	public static int putScore = 0;
 	public static int postScore = 0;
 	public static String nextMethod;
 
 	public static String setUrl() throws SocketException {
-		int port = Global.port;
+		int port = CoAPGlobal.port;
 
 		String ip = null;
 
