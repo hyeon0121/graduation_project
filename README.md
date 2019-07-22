@@ -1,2 +1,5 @@
-# coap-test
-coap client testing tool
+# Network Protocol 자동 채점 및 코드 분석 시스템 구현
+
+## 1. Network Protocol 자동 채점 및 분석 시스템
+- 인공지능 사회가 발달되어감에 따라 국가 및 다양한 기업에서도 프로그램 Code에 대한 자동 채점 프로그램 발달이 확산되어 지고 있다. 
+- 입력된 프로그램을 다양한 Test Case, Process 입장에서 분석, 평가하고 어떤 과정에서 잘못되었는지 Code Review를 통해 입력자 입장에서 스스로 인지하도록 하고 문제 및 성능을 해결해 나갈 수 있는 능력을 키우는 것을 목표로 한다.
