@@ -1,6 +1,7 @@
 package com.example.demo.server;
 
 import com.sun.net.httpserver.HttpServer;
+//import org.apache.http.impl.bootstrap.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -11,6 +12,7 @@ public class SubWebServer {
 	private static int port;
 
 	private HttpServer server;
+
 	String getAnswer;
 	@SuppressWarnings("static-access")
 
@@ -25,11 +27,11 @@ public class SubWebServer {
 		try {
 			server = HttpServer.create(new InetSocketAddress(this.port), 0);
 
-			server.createContext("/getHandleTest", new Myhandler.getHandler(getAnswer));
-			server.createContext("/postHandleTest", new Myhandler.postHandler());
+			server.createContext("/scenarioTest", new SubWebServerHandler.scenarioHandler(getAnswer));
+			server.createContext("/getHandleTest", new SubWebServerHandler.getHandler(getAnswer));
+			server.createContext("/postHandleTest", new SubWebServerHandler.postHandler());
 
 			server.start();
-
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
