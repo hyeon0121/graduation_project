@@ -3,29 +3,26 @@ package com.example.demo.client;
 import com.example.demo.global.HttpGlobal;
 import com.example.demo.model.StuServerInfo;
 import com.example.demo.model.Student;
-import com.sun.net.httpserver.HttpExchange;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponse;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
-	public static String recvStatus;
 	private String hostIP;
 	private Student student;
 	public int itemIndex;
+	private String cookieValue;
 	private static boolean connTest = false;
 	private static boolean multiThread = false;
 	private static boolean errorTest200 = false;
-	private static boolean errorTest201 = false;
 	private static boolean errorTest404 = false;
 	private static boolean errorTest400 = false;
 	private static boolean contentLengthTest = false;
 	private static boolean contentHtmlTest = false;
 	private static boolean contentImageTest = false;
+	private static boolean cookieTest = false;
+
 
 	public ClientHandler(Student student, String hostIP, int index) {
 		this.student = student;
@@ -39,7 +36,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 		if (msg instanceof HttpResponse) {
 			HttpResponse response = (HttpResponse) msg;
 
-			System.out.println("msg:   " +msg);
+			// System.out.println("msg:   " +msg);
 
 			int checkSeq = itemIndex;
 			String[] statusArr = response.getStatus().toString().split(" ");
@@ -48,12 +45,26 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 			System.out.println("---");
 			System.out.println(response.getStatus());
 			System.out.println(status);
-			System.out.println("checkSeq"+checkSeq);
+			System.out.println("checkSeq "+checkSeq);
 			
 			
 			switch (checkSeq) {
 				case 0:
-					if (status == 200 || status == 201 || status == 404 || status == 501) {
+					if (response.headers().get("Set-Cookie") != null) {
+						String cookies[] = response.headers().get("Set-Cookie").split(";");
+						String cookie[] = cookies[0].split("=");
+
+						String key = cookie[0];
+						cookieValue = cookie[1];
+
+						System.out.println("key:" + key + ", value:" + cookieValue);
+						cookieTest = true;
+
+					} else {
+						cookieTest = false;
+					}
+
+					if (status == 200 || status == 404 || status == 501) {
 						connTest = true;
 						HttpGlobal.statusMap.put(hostIP, 1);
 
@@ -64,8 +75,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 					break;
 				// MultiThread
 				case 2:
-					// System.out.println("1");
-					//
+					cookieTest = cookieValueTest(response);
+
 					if (status == 200) {
 						multiThread = true;
 						errorTest200 = true;
@@ -74,19 +85,10 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 						multiThread = false;
 						errorTest200 = false;
 					}
+
 					break;
 				case 3:
-					// System.out.println("3");
-					if (status == 201) {
-						errorTest201 = true;
-
-					} else {
-						errorTest201 = false;
-					}
-					break;
-
-				case 4:
-					// System.out.println("3");
+					cookieTest = cookieValueTest(response);
 
 					if (status == 404) {
 						errorTest404 = true;
@@ -94,9 +96,12 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 					} else {
 						errorTest404 = false;
 					}
+
 					break;
 
-				case 5:
+				case 4:
+					cookieTest = cookieValueTest(response);
+
 					if (status == 400) {
 						errorTest400 = true;
 
@@ -106,27 +111,28 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 
 					break;
 
-				case 6:
-					System.out.println("CASE6");
+				case 5:
+					cookieTest = cookieValueTest(response);
+
+					System.out.println("CASE5");
 
 					String contentType="";
 
-					if(response.headers().get("Content-Type")!=null) {
+					if(response.headers().get("Content-Type") != null) {
 						contentType = response.headers().get("Content-Type");
 
-					}else if(response.headers().get("content-type")!=null) {
+					}else if(response.headers().get("content-type") != null) {
 						contentType = response.headers().get("content-type");
 
 					}
 
-					if (response.headers().get("Content-Length")!=null) {
+					if (response.headers().get("Content-Length") != null) {
 
 						int contentLength = Integer.parseInt(response.headers().get("Content-Length"));
-						System.err.println("content length"+contentLength);
 
 						if ((status == 200) && (contentLength == 1024)) {
 
-							System.err.println("content length"+contentLength);
+							System.err.println("content length "+contentLength);
 
 							contentLengthTest = true;
 
@@ -150,102 +156,105 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 						break;
 					}
 
-				case 7:
+				case 6:
+					cookieTest = cookieValueTest(response);
+
+					System.out.println("CASE6");
 
 					contentType="";
 
-					if(response.headers().get("Content-Type")!=null) {
+					if(response.headers().get("Content-Type") != null) {
 						contentType = response.headers().get("Content-Type");
 
-					}else if(response.headers().get("content-type")!=null) {
+					}else if(response.headers().get("content-type") != null) {
 						contentType = response.headers().get("content-type");
 
 					}
 
-
-					if ((status == 200) && ((contentType.equals("image/jpg"))||(contentType.equals("image/jpeg")))) {
+					if ((status == 200) && ((contentType.equals("image/jpg")) || (contentType.equals("image/jpeg")))) {
 						contentImageTest = true;
 
 					} else {
 						contentImageTest = false;
 					}
 
-					StuServerInfo stuVal = new StuServerInfo(this.student.getSname(), this.student.getSno(), this.student.getSip(), this.student.getSport(),
-							connTest, multiThread, errorTest200, errorTest201, errorTest404,
-							errorTest400, contentLengthTest, contentHtmlTest, contentImageTest);
+					if (status == 200) {
+						StuServerInfo stuVal = new StuServerInfo(this.student.getSname(), this.student.getSno(), this.student.getSip(), this.student.getSport(),
+								connTest, multiThread, errorTest200, errorTest404,
+								errorTest400, contentLengthTest, contentHtmlTest, contentImageTest, cookieTest);
 
-					stuVal.toString();
+						stuVal.toString();
 
-					HttpGlobal.stuInfo.put(this.student.getSno(), stuVal);
-
-					long lTime = System.currentTimeMillis();
-
-					SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
-					StuServerInfo userInfo = HttpGlobal.stuInfo.get(student.getSno());
-
-					String str = dayTime.format(new Date(lTime));
-					int cnt = 0;
-
-					int checkScore = 20;
-
-					if(cnt == 0) {
-
-						if(userInfo.isConnTest()) {
-							checkScore += 10;
-							System.out.println(1);
-						}
-						if(userInfo.isMultiThread()) {
-							checkScore += 10;
-							System.out.println(2);
-
-						}
-
-						if(userInfo.isErrorTest200()) {
-							System.out.println(3);
-
-							checkScore += 10;
-						}
-
-						if(userInfo.isErrorTest201()) {
-							System.out.println(4);
-
-							checkScore += 10;
-						}
-
-						if(userInfo.isErrorTest404()) {
-							System.out.println(5);
-
-							checkScore += 10;
-						}
-
-						if(userInfo.isErrorTest400()) {
-							System.out.println(6);
-
-							checkScore += 10;
-						}
-
-						if(userInfo.isContentLengthTest()) {
-							System.out.println(7);
-
-							checkScore += 10;
-						}
-
-						if(userInfo.isContentHtmlTest()) {
-							System.out.println(8);
-
-							checkScore += 10;
-						}
-
-						if(userInfo.isContentImageTest()) {
-							System.out.println(9);
-							checkScore += 10;
-						}
+						HttpGlobal.stuInfo.put(this.student.getSno(), stuVal);
 					}
 
-					String score = String.valueOf(checkScore);
-
-					System.out.println("################# score :" + score + "      time  :  " + str);
+//					long lTime = System.currentTimeMillis();
+//
+//					SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//
+//					StuServerInfo userInfo = HttpGlobal.stuInfo.get(student.getSno());
+//
+//					String str = dayTime.format(new Date(lTime));
+//					int cnt = 0;
+//
+//					int checkScore = 0;
+//
+//					if(cnt == 0) {
+//
+//						if(userInfo.isConnTest()) {
+//							checkScore += 10;
+//							System.out.println(1);
+//						}
+//						if(userInfo.isMultiThread()) {
+//							checkScore += 10;
+//							System.out.println(2);
+//
+//						}
+//
+//						if(userInfo.isErrorTest200()) {
+//							System.out.println(3);
+//
+//							checkScore += 10;
+//						}
+//
+//						if(userInfo.isErrorTest404()) {
+//							System.out.println(4);
+//
+//							checkScore += 10;
+//						}
+//
+//						if(userInfo.isErrorTest400()) {
+//							System.out.println(5);
+//
+//							checkScore += 10;
+//						}
+//
+//						if(userInfo.isContentLengthTest()) {
+//							System.out.println(6);
+//
+//							checkScore += 10;
+//						}
+//
+//						if(userInfo.isContentHtmlTest()) {
+//							System.out.println(7);
+//
+//							checkScore += 10;
+//						}
+//
+//						if(userInfo.isContentImageTest()) {
+//							System.out.println(8);
+//							checkScore += 10;
+//						}
+//
+//						if(userInfo.isCookieTest()) {
+//							System.out.println(9);
+//							checkScore += 10;
+//						}
+//					}
+//
+//					String score = String.valueOf(checkScore);
+//
+//					System.out.println("################# score :" + score + "      time  :  " + str);
 
 					break;
 
@@ -261,12 +270,29 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 		ctx.close();
 	}
 
-	public String getRecvStatus() {
-		return recvStatus;
-	}
 
-	public void setRecvStatus(String recvStatus) {
-		this.recvStatus = recvStatus;
-	}
+	public boolean cookieValueTest(HttpResponse response) {
+		boolean cookieValueTest;
+		if (response.headers().get("Set-Cookie") != null && cookieTest) {
+			String cookies[] = response.headers().get("Set-Cookie").split(";");
+			String cookie[] = cookies[0].split("=");
 
+			String key = cookie[0];
+			String value = cookie[1];
+
+			System.out.println("key:" + key + ", value:" + value);
+
+			if (value.equals(cookieValue)) {
+				cookieValueTest = false;
+			} else {
+				cookieValue = value;
+				cookieValueTest = true;
+			}
+
+		} else {
+			cookieValueTest = false;
+		}
+
+		return cookieValueTest;
+	}
 }

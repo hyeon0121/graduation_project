@@ -22,7 +22,6 @@ public class CliCnt extends Thread {
 
 		while (true) {
 			try {
-
 				sleep(1000);
 
 			} catch (InterruptedException e) {
@@ -31,14 +30,13 @@ public class CliCnt extends Thread {
 			}
 			if (HttpGlobal.statusMap.get(student.getSip()) != null) {
 				if (HttpGlobal.statusMap.get(student.getSip()) == 1) {
-					for (int i = 1; i < 8; i++) {
+					for (int i = 1; i < 7; i++) {
 						httpClient = new HttpClient(student,i);
 						HttpGlobal.statusMap.put(student.getSip(), i);
 
 						httpClient.start();
 						
 						try {
-
 							sleep(100);
 
 						} catch (InterruptedException e) {

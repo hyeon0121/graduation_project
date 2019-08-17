@@ -75,23 +75,20 @@ public class HttpClient extends Thread {
 					uri = new URI("/" + "index.html");
 					break;
 				case 3:
-					uri = new URI("/" + "index.html");
+					uri = new URI("/mir.html");
 					break;
 				case 4:
-					uri = new URI("/mir.html");
+					uri = new URI("/" + "index.html");
 					break;
 				case 5:
 					uri = new URI("/" + "index.html");
 					break;
 				case 6:
-					uri = new URI("/" + "index.html");
-					break;
-				case 7:
 					uri = new URI("/" + "image.jpg");
 					break;
 			}
 
-			if (itemIndex == 5) {
+			if (itemIndex == 4) {
 				request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.GET, uri.toASCIIString(),
 						Unpooled.wrappedBuffer(msg.getBytes("UTF-8")));
 			} else{
