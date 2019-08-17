@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.client.CliCnt;
 import com.example.demo.global.CoAPGlobal;
-import com.example.demo.model.History;
+import com.example.demo.model.*;
 import com.example.demo.global.HttpGlobal;
-import com.example.demo.model.Student;
 import com.example.demo.server.StaticHandler;
 import com.example.demo.server.SubWebServer;
 import com.example.demo.service.HistoryService;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -23,14 +24,193 @@ import java.util.Random;
 @CrossOrigin
 @RestController
 public class MainController {
+    static int cnt = 0;
 
     @Autowired
     private HistoryService historyService;
 
-    // WebClient test
+    // Web Server test
+    @RequestMapping(value = "/web_server", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Object> webServer(@RequestBody Student student) throws JSONException, IOException {
+
+        System.out.println("Served by /request handler...");
+
+        System.out.println(student.toString());
+
+        CliCnt cc = new CliCnt(student);
+        cc.setName("Client Thread"+(cnt++));
+        cc.start();
+
+        System.out.println(cc.getName());
+
+        return ResponseEntity.ok()
+                .body("success");
+    }
+
+    @RequestMapping(value = "/webserver_result", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Object> webServerResult(@RequestBody Student student) throws JSONException, IOException {
+
+        StuServerInfo userInfo = HttpGlobal.stuInfo.get(student.getSno());
+
+        int checkScore = 0;
+
+        if(userInfo.isConnTest()) {
+            checkScore += 10;
+            System.out.println(1);
+        }
+
+        if(userInfo.isMultiThread()) {
+            checkScore += 10;
+            System.out.println(2);
+
+        }
+
+        if(userInfo.isErrorTest200()) {
+            System.out.println(3);
+
+            checkScore += 10;
+        }
+
+        if(userInfo.isErrorTest201()) {
+            System.out.println(4);
+
+            checkScore += 10;
+        }
+
+        if(userInfo.isErrorTest404()) {
+            System.out.println(5);
+
+            checkScore += 10;
+        }
+
+        if(userInfo.isErrorTest400()) {
+            System.out.println(6);
+
+            checkScore += 10;
+        }
+
+        if(userInfo.isContentLengthTest()) {
+            System.out.println(7);
+
+            checkScore += 10;
+        }
+
+        if(userInfo.isContentHtmlTest()) {
+            System.out.println(8);
+
+            checkScore += 10;
+        }
+
+        if(userInfo.isContentImageTest()) {
+            System.out.println(9);
+            checkScore += 10;
+        }
+
+        String score = String.valueOf(checkScore);
+
+        System.out.println("################# score :" + score);
+
+        return ResponseEntity.ok()
+                .body(userInfo.toString());
+    }
+
+    // Web Client Scenario test
+    @RequestMapping(value = "/http_scenario", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Object> httpScenarioTest() throws JSONException {
+
+        int port = StaticHandler.findFreePort();
+        HttpGlobal.port = port;
+
+        InetAddress ip;
+        String url = null;
+
+        Random random = new Random();
+
+        int pick = random.nextInt(HttpGlobal.proverbArr.length); // 0 ~ 4
+
+        String getAnswer = HttpGlobal.proverbArr[pick];
+
+        HttpGlobal.getAnswer = getAnswer;
+        System.out.println(getAnswer);
+
+        try {
+            ip = InetAddress.getLocalHost();
+            url = "http://" + ip.getHostAddress()+":"+port+"/scenarioTest";
+            System.out.println(url);
+
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject json = new JSONObject();
+        json.put("url", url);
+
+        new Thread(new Runnable() {
+
+            public void run() {
+                SubWebServer testServer = new SubWebServer(port, getAnswer);
+                testServer.start();
+                testServer.stop(1000000);
+            }
+        }).start();
+
+        return ResponseEntity.ok()
+                .body(json.toString());
+    }
+
+    @RequestMapping(value = "/http_result", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Object> httpResult() throws JSONException {
+        JSONObject json = new JSONObject();
+
+        // ..
+//        StuCliScenario stuCliScenario = HttpGlobal.webCliSceStuInfo.get("");
+//        json.put("httpCheck", stuCliScenario.isHttpCheck());
+//        json.put("httpVersion", stuCliScenario.isHttpVersion());
+//        json.put("headerUserAgent", stuCliScenario.isUserAgent());
+//        json.put("getAnswer", stuCliScenario.getGetAnswer());
+//        json.put("postAnswer", stuCliScenario.getPostAnswer());
+
+        json.put("httpCheck", HttpGlobal.httpCheck);
+        json.put("httpVersion", HttpGlobal.httpVersion);
+        json.put("headerUserAgent", HttpGlobal.headerUserAgent);
+        json.put("getAnswer", HttpGlobal.getAnswer);
+        json.put("postAnswer", HttpGlobal.postAnswer);
+
+        System.out.println("http : " + HttpGlobal.httpCheck);
+        System.out.println("version : " + HttpGlobal.httpVersion);
+        System.out.println("header : " + HttpGlobal.headerUserAgent);
+        System.out.println("GET ANSWER : " + HttpGlobal.getAnswer);
+        System.out.println("POST ANSWER : " + HttpGlobal.postAnswer);
+
+        return ResponseEntity.ok()
+                .body(json.toString());
+    }
+
+    @RequestMapping(value = "/http_submit", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Object> httpSubmit(@RequestBody Student student, int getScore, int postScore) throws JSONException {
+        System.out.println(student.toString());
+
+        StuCliScenario stuCliScenario = HttpGlobal.webCliSceStuInfo.get(student.getSno());
+        StuCliScore stuCliScore = new StuCliScore(student.getSip(), student.getSname(), student.getSno(), student.getSport(),
+                stuCliScenario.isHttpCheck(), stuCliScenario.isHttpCheck(), stuCliScenario.isHttpVersion() );
+
+        stuCliScore.setGetScore(getScore);
+        stuCliScore.setPostScore(postScore);
+
+        System.out.println(stuCliScore.toString());
+
+        return new ResponseEntity<>("success", HttpStatus.OK);
+    }
+
+    // Web Client Unit test
     @RequestMapping(value = "/http_get", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Object> httpGetUrl() throws JSONException {
+    public ResponseEntity<Object> httpGetTest() throws JSONException {
 
         int port = StaticHandler.findFreePort();
         HttpGlobal.port = port;
@@ -50,6 +230,7 @@ public class MainController {
         try {
             ip = InetAddress.getLocalHost();
             url = "http://" + ip.getHostAddress()+":"+port+"/getHandleTest";
+            System.out.println(url);
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -73,9 +254,10 @@ public class MainController {
 
     @RequestMapping(value = "/http_post", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Object> httpPostUrl() throws JSONException {
+    public ResponseEntity<Object> httpPostTest() throws JSONException {
 
-        int port = HttpGlobal.port;
+        int port = StaticHandler.findFreePort();
+        HttpGlobal.port = port;
 
         InetAddress ip;
         String url = null;
@@ -83,6 +265,7 @@ public class MainController {
         try {
             ip = InetAddress.getLocalHost();
             url = "http://" + ip.getHostAddress()+":"+port+"/postHandleTest";
+            System.out.println(url);
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -91,31 +274,63 @@ public class MainController {
         JSONObject json = new JSONObject();
         json.put("url", url);
 
+        new Thread(new Runnable() {
+
+            public void run() {
+                SubWebServer testServer = new SubWebServer(port);
+                testServer.start();
+                testServer.stop(1000000);
+            }
+        }).start();
+
         return ResponseEntity.ok()
                 .body(json.toString());
     }
 
 
-    @RequestMapping(value = "/http_result", method = RequestMethod.GET)
+    @RequestMapping(value = "/get_result", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Object> getHttpResult() throws JSONException {
+    public ResponseEntity<Object> getResult() throws JSONException {
         JSONObject json = new JSONObject();
+
+//        StuCliGet stuCliGet = HttpGlobal.webCliGetStuInfo.get("");
+//        json.put("httpCheck", stuCliGet.isHttpCheck());
+//        json.put("httpVersion", stuCliGet.isHttpVersion());
+//        json.put("headerUserAgent", stuCliGet.isUserAgent());
+//        json.put("getAnswer", stuCliGet.getGetAnswer());
+
+        json.put("httpCheck", HttpGlobal.httpCheck);
+        json.put("httpVersion", HttpGlobal.httpVersion);
+        json.put("headerUserAgent", HttpGlobal.headerUserAgent);
         json.put("getAnswer", HttpGlobal.getAnswer);
+
+        System.out.println("http : " + HttpGlobal.httpCheck);
+        System.out.println("version : " + HttpGlobal.httpVersion);
+        System.out.println("header : " + HttpGlobal.headerUserAgent);
+        System.out.println("GET ANSWER : " + HttpGlobal.getAnswer);
+
+        return ResponseEntity.ok()
+                .body(json.toString());
+    }
+
+    @RequestMapping(value = "/post_result", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Object> postResult() throws JSONException {
+        JSONObject json = new JSONObject();
+
+        json.put("httpCheck", HttpGlobal.httpCheck);
+        json.put("httpVersion", HttpGlobal.httpVersion);
+        json.put("headerUserAgent", HttpGlobal.headerUserAgent);
         json.put("postAnswer", HttpGlobal.postAnswer);
 
-        System.out.println("GET ANSWER : " + HttpGlobal.getAnswer);
+
+        System.out.println("http : " + HttpGlobal.httpCheck);
+        System.out.println("version : " + HttpGlobal.httpVersion);
+        System.out.println("header : " + HttpGlobal.headerUserAgent);
         System.out.println("POST ANSWER : " + HttpGlobal.postAnswer);
 
         return ResponseEntity.ok()
                 .body(json.toString());
-    }
-
-    @RequestMapping(value = "/http_submit", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<Object> getHttpSubmit(@RequestBody Student student) throws JSONException {
-        System.out.println(student.toString());
-
-        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 
     // CoAP Unit Test
@@ -174,7 +389,6 @@ public class MainController {
     @ResponseBody
     public  ResponseEntity<Object> getConnectURL() throws JSONException, SocketException {
 
-
         String url = CoAPGlobal.setUrl() + "/connect";
         JSONObject json = new JSONObject();
         json.put("url", url);
@@ -215,7 +429,7 @@ public class MainController {
 
     @RequestMapping(value = "/result", method = RequestMethod.GET)
     @ResponseBody
-    public  ResponseEntity<Object> getResult() throws JSONException {
+    public  ResponseEntity<Object> result() throws JSONException {
 
         JSONObject json = new JSONObject();
         json.put("message", CoAPGlobal.message);
