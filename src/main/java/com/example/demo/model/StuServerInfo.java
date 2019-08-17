@@ -1,20 +1,20 @@
 package com.example.demo.model;
 
 public class StuServerInfo extends Student {
-    boolean connTest, multiThread, errorTest200, errorTest201, errorTest404, errorTest400, contentLengthTest, contentHtmlTest,
-            contentImageTest;
+    boolean connTest, multiThread, errorTest200, errorTest404, errorTest400, contentLengthTest, contentHtmlTest,
+            contentImageTest, cookieTest;
 
-    public StuServerInfo(String sname, String sno, String sip, String sport, boolean connTest, boolean multiThread, boolean errorTest200, boolean errorTest201, boolean errorTest404, boolean errorTest400, boolean contentLengthTest, boolean contentHtmlTest, boolean contentImageTest) {
+    public StuServerInfo(String sname, String sno, String sip, String sport, boolean connTest, boolean multiThread, boolean errorTest200, boolean errorTest404, boolean errorTest400, boolean contentLengthTest, boolean contentHtmlTest, boolean contentImageTest, boolean cookieTest) {
         super(sname, sno, sip, sport);
         this.connTest = connTest;
         this.multiThread = multiThread;
         this.errorTest200 = errorTest200;
-        this.errorTest201 = errorTest201;
         this.errorTest404 = errorTest404;
         this.errorTest400 = errorTest400;
         this.contentLengthTest = contentLengthTest;
         this.contentHtmlTest = contentHtmlTest;
         this.contentImageTest = contentImageTest;
+        this.cookieTest = cookieTest;
     }
 
     public boolean isConnTest() {
@@ -39,14 +39,6 @@ public class StuServerInfo extends Student {
 
     public void setErrorTest200(boolean errorTest200) {
         this.errorTest200 = errorTest200;
-    }
-
-    public boolean isErrorTest201() {
-        return errorTest201;
-    }
-
-    public void setErrorTest201(boolean errorTest201) {
-        this.errorTest201 = errorTest201;
     }
 
     public boolean isErrorTest404() {
@@ -89,18 +81,26 @@ public class StuServerInfo extends Student {
         this.contentImageTest = contentImageTest;
     }
 
+    public boolean isCookieTest() {
+        return cookieTest;
+    }
+
+    public void setCookieTest(boolean cookieTest) {
+        this.cookieTest = cookieTest;
+    }
+
     @Override
     public String toString() {
         return "{" +
-                "\"connTest\" : " + connTest +
-                ", \"multiThread\" : " + multiThread +
-                ", \"errorTest200\" : " + errorTest200 +
-                ", \"errorTest201\" : "  + errorTest201 +
-                ", \"errorTest404\" : " + errorTest404 +
-                ", \"errorTest400\" : " + errorTest400 +
-                ", \"contentLengthTest\" : " + contentLengthTest +
-                ", \"contentHtmlTest\" : "  + contentHtmlTest +
-                ", \"contentImageTest\" : " + contentImageTest +
+                "connTest=" + connTest +
+                ", multiThread=" + multiThread +
+                ", errorTest200=" + errorTest200 +
+                ", errorTest404=" + errorTest404 +
+                ", errorTest400=" + errorTest400 +
+                ", contentLengthTest=" + contentLengthTest +
+                ", contentHtmlTest=" + contentHtmlTest +
+                ", contentImageTest=" + contentImageTest +
+                ", cookieTest=" + cookieTest +
                 '}';
     }
 }
