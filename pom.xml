@@ -80,6 +80,12 @@
 			<version>2.9.5</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.11</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
