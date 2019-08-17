@@ -44,76 +44,89 @@ public class MainController {
 
         System.out.println(cc.getName());
 
-        return ResponseEntity.ok()
-                .body("success");
-    }
+//        return ResponseEntity.ok()
+//                .body("success");
 
-    @RequestMapping(value = "/webserver_result", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<Object> webServerResult(@RequestBody Student student) throws JSONException, IOException {
+        while(true) {
+            StuServerInfo userInfo = HttpGlobal.stuInfo.get(student.getSno());
 
-        StuServerInfo userInfo = HttpGlobal.stuInfo.get(student.getSno());
+            if (userInfo == null) {
+                continue;
 
-        int checkScore = 0;
+            } else {
+                int checkScore = 0;
 
-        if(userInfo.isConnTest()) {
-            checkScore += 10;
-            System.out.println(1);
+                if(userInfo.isConnTest()) {
+                    checkScore += 10;
+                    System.out.println(1);
+                }
+
+                if(userInfo.isMultiThread()) {
+                    checkScore += 10;
+                    System.out.println(2);
+                }
+
+                if(userInfo.isErrorTest200()) {
+                    System.out.println(3);
+
+                    checkScore += 10;
+                }
+
+                if(userInfo.isErrorTest404()) {
+                    System.out.println(4);
+
+                    checkScore += 10;
+                }
+
+                if(userInfo.isErrorTest400()) {
+                    System.out.println(5);
+
+                    checkScore += 10;
+                }
+
+                if(userInfo.isContentLengthTest()) {
+                    System.out.println(6);
+
+                    checkScore += 10;
+                }
+
+                if(userInfo.isContentHtmlTest()) {
+                    System.out.println(7);
+
+                    checkScore += 10;
+                }
+
+                if(userInfo.isContentImageTest()) {
+                    System.out.println(8);
+                    checkScore += 10;
+                }
+
+                if(userInfo.isCookieTest()) {
+                    System.out.println(9);
+                    checkScore += 10;
+                }
+
+                String score = String.valueOf(checkScore);
+
+                System.out.println("################# score :" + score);
+
+                JSONObject json = new JSONObject();
+                json.put("connTest", userInfo.isConnTest());
+                json.put("multiThread", userInfo.isMultiThread());
+                json.put("errorTest200", userInfo.isErrorTest200());
+                json.put("errorTest404", userInfo.isErrorTest404());
+                json.put("errorTest400", userInfo.isErrorTest400());
+                json.put("contentLengthTest", userInfo.isContentLengthTest());
+                json.put("contentHtmlTest", userInfo.isContentHtmlTest());
+                json.put("contentImageTest", userInfo.isContentImageTest());
+                json.put("cookieTest", userInfo.isCookieTest());
+
+                return ResponseEntity.ok()
+                        .body(json.toString());
+            }
+
         }
 
-        if(userInfo.isMultiThread()) {
-            checkScore += 10;
-            System.out.println(2);
-
-        }
-
-        if(userInfo.isErrorTest200()) {
-            System.out.println(3);
-
-            checkScore += 10;
-        }
-
-        if(userInfo.isErrorTest201()) {
-            System.out.println(4);
-
-            checkScore += 10;
-        }
-
-        if(userInfo.isErrorTest404()) {
-            System.out.println(5);
-
-            checkScore += 10;
-        }
-
-        if(userInfo.isErrorTest400()) {
-            System.out.println(6);
-
-            checkScore += 10;
-        }
-
-        if(userInfo.isContentLengthTest()) {
-            System.out.println(7);
-
-            checkScore += 10;
-        }
-
-        if(userInfo.isContentHtmlTest()) {
-            System.out.println(8);
-
-            checkScore += 10;
-        }
-
-        if(userInfo.isContentImageTest()) {
-            System.out.println(9);
-            checkScore += 10;
-        }
-
-        String score = String.valueOf(checkScore);
-
-        System.out.println("################# score :" + score);
-
-        return ResponseEntity.ok()
-                .body(userInfo.toString());
     }
 
     // Web Client Scenario test
