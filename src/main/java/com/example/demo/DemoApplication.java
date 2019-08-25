@@ -1,7 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.global.DeviceInfo;
-import com.example.demo.global.Global;
+import com.example.demo.global.CoAPGlobal;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -26,7 +26,7 @@ public class DemoApplication {
 		while (true) {
 
 			// Get Device ID
-			DeviceInfo device = Global.device_list.get(Global.deviceId);
+			DeviceInfo device = CoAPGlobal.device_list.get(CoAPGlobal.deviceId);
 			if (device == null) {
 				Thread.sleep(1000);
 				continue;
@@ -34,9 +34,9 @@ public class DemoApplication {
 
 			//System.out.println(device.getDeviceID());
 
-			if (Global.getTemperatures() != null) {
+			if (CoAPGlobal.getTemperatures() != null) {
 				int i = 0;
-				int[] numbers = Global.getTemperatures();
+				int[] numbers = CoAPGlobal.getTemperatures();
 
 				while (i < 5) {
 					int input = numbers[i];
@@ -49,7 +49,6 @@ public class DemoApplication {
 
 				Thread.sleep(5000);
 			}
-
 		}
 
 	}
