@@ -1,7 +1,7 @@
 package com.example.demo.resource;
 
 import com.example.demo.global.DeviceInfo;
-import com.example.demo.global.Global;
+import com.example.demo.global.CoAPGlobal;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
@@ -17,7 +17,7 @@ public class ObserveResource extends CoapResource {
 		// enable observing
 		setObservable(true);
 		
-		// configure the notification type to CONs
+		// configure the notification type to NONs
 		setObserveType(Type.NON);
 		getAttributes().setObservable(); // mark observable in the Link-Format
 	}
@@ -27,7 +27,7 @@ public class ObserveResource extends CoapResource {
 
 		try {
 			String id = getName();
-			DeviceInfo device = Global.device_list.get(id);
+			DeviceInfo device = CoAPGlobal.device_list.get(id);
 
 			//From Main, get Device Event 
 			int event = device.getTemperatures();
