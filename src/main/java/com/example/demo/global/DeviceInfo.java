@@ -4,7 +4,7 @@ import com.example.demo.resource.ObserveResource;
 
 public class DeviceInfo {
 
-	// 1. Device Information
+	// Device Information
 	String deviceID;
 	String mode; // pull, push
 	String state; // Current Device State on, off
@@ -59,9 +59,6 @@ public class DeviceInfo {
 	}
 
 	// observe
-	/*
-	 * 2. Event Control
-	 */
 	ObserveResource resource;
 	
 	public ObserveResource getResource() {

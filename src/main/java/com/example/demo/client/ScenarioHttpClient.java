@@ -13,8 +13,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.*;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URI;
 
 public class HttpClient extends Thread {
@@ -49,7 +47,7 @@ public class HttpClient extends Thread {
 				public void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast(new HttpResponseDecoder());
 					ch.pipeline().addLast(new HttpRequestEncoder());
-					ch.pipeline().addLast(new ClientHandler(student, host, itemIndex));
+					ch.pipeline().addLast(new ClientScenarioHandler(student, host, itemIndex));
 
 				}
 			});

@@ -1,5 +1,6 @@
 package com.example.demo.server;
 
+import com.example.demo.model.Student;
 import com.sun.net.httpserver.HttpServer;
 //import org.apache.http.impl.bootstrap.HttpServer;
 
@@ -14,12 +15,19 @@ public class SubWebServer {
 	private HttpServer server;
 
 	String getAnswer;
+	Student student;
 	@SuppressWarnings("static-access")
 
-	public SubWebServer(int port, String getAnswer) {
+	public SubWebServer(int port, String getAnswer, Student student) {
 		this.port = port;
 		this.getAnswer = getAnswer;
+		this.student = student;
 	}
+
+	public SubWebServer(int port, Student student) {
+		this.port = port;
+        this.student = student;
+    }
 
 	@SuppressWarnings("static-access")
 
@@ -27,9 +35,9 @@ public class SubWebServer {
 		try {
 			server = HttpServer.create(new InetSocketAddress(this.port), 0);
 
-			server.createContext("/scenarioTest", new SubWebServerHandler.scenarioHandler(getAnswer));
-			server.createContext("/getHandleTest", new SubWebServerHandler.getHandler(getAnswer));
-			server.createContext("/postHandleTest", new SubWebServerHandler.postHandler());
+			server.createContext("/scenarioTest", new SubWebServerHandler.scenarioHandler(getAnswer, student));
+			server.createContext("/getHandleTest", new SubWebServerHandler.getHandler(getAnswer, student));
+			server.createContext("/postHandleTest", new SubWebServerHandler.postHandler(student));
 
 			server.start();
 
