@@ -1,7 +1,7 @@
 package com.example.demo.client;
 
+import com.example.demo.global.HttpGlobal;
 import com.example.demo.model.Student;
-import com.sun.net.httpserver.HttpExchange;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -15,17 +15,16 @@ import io.netty.handler.codec.http.*;
 
 import java.net.URI;
 
-public class HttpClient extends Thread {
+public class ScenarioHttpClient extends Thread {
 	public static boolean connectionRefuse = false;
 
 	public int itemIndex;
-	HttpExchange he;
 	public String host;
 	public int port;
 
 	public Student student;
 
-	public HttpClient(Student student, int index) {
+	public ScenarioHttpClient(Student student, int index) {
 		this.student = student;
 		this.host = student.getSip();
 		this.port = Integer.parseInt(student.getSport());
@@ -89,9 +88,11 @@ public class HttpClient extends Thread {
 			if (itemIndex == 4) {
 				request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_0, HttpMethod.GET, uri.toASCIIString(),
 						Unpooled.wrappedBuffer(msg.getBytes("UTF-8")));
+
 			} else{
 				request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, uri.toASCIIString(),
 						Unpooled.wrappedBuffer(msg.getBytes("UTF-8")));
+
 			}
 
 			request.headers().set(HttpHeaders.Names.HOST, host);
@@ -100,6 +101,7 @@ public class HttpClient extends Thread {
 
 			f.channel().writeAndFlush(request);
 			f.channel().closeFuture().sync();
+
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -3,11 +3,11 @@ package com.example.demo.client;
 import com.example.demo.global.HttpGlobal;
 import com.example.demo.model.Student;
 
-public class CliCnt extends Thread {
-	HttpClient httpClient;
+public class ScenarioCliCnt extends Thread {
+	ScenarioHttpClient httpClient;
 	Student student;
 
-	public CliCnt(Student student) {
+	public ScenarioCliCnt(Student student) {
 		this.student = student;
 	}
 
@@ -17,7 +17,7 @@ public class CliCnt extends Thread {
 		System.out.println(student.getSip());
 		System.out.println(student.getSport());
 
-		httpClient = new HttpClient(student, 0);
+		httpClient = new ScenarioHttpClient(student, 0);
 		httpClient.start();
 
 		while (true) {
@@ -31,7 +31,7 @@ public class CliCnt extends Thread {
 			if (HttpGlobal.statusMap.get(student.getSip()) != null) {
 				if (HttpGlobal.statusMap.get(student.getSip()) == 1) {
 					for (int i = 1; i < 7; i++) {
-						httpClient = new HttpClient(student,i);
+						httpClient = new ScenarioHttpClient(student,i);
 						HttpGlobal.statusMap.put(student.getSip(), i);
 
 						httpClient.start();

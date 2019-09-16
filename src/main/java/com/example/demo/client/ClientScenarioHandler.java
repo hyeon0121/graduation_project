@@ -8,7 +8,10 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponse;
 
-public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
+import java.util.Calendar;
+
+public class ClientScenarioHandler extends SimpleChannelInboundHandler<HttpObject> {
+	Calendar calendar = Calendar.getInstance();
 	private String hostIP;
 	private Student student;
 	public int itemIndex;
@@ -23,8 +26,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 	private static boolean contentImageTest = false;
 	private static boolean cookieTest = false;
 
-
-	public ClientHandler(Student student, String hostIP, int index) {
+	public ClientScenarioHandler(Student student, String hostIP, int index) {
 		this.student = student;
 		this.hostIP= hostIP;
 		this.itemIndex = index;
@@ -36,7 +38,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 		if (msg instanceof HttpResponse) {
 			HttpResponse response = (HttpResponse) msg;
 
-			// System.out.println("msg:   " +msg);
+			String sno = this.student.getSno();
 
 			int checkSeq = itemIndex;
 			String[] statusArr = response.getStatus().toString().split(" ");
@@ -46,8 +48,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 			System.out.println(response.getStatus());
 			System.out.println(status);
 			System.out.println("checkSeq "+checkSeq);
-			
-			
+
 			switch (checkSeq) {
 				case 0:
 					if (response.headers().get("Set-Cookie") != null) {
@@ -75,6 +76,16 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 					break;
 				// MultiThread
 				case 2:
+					long tmp = System.currentTimeMillis() - HttpGlobal.sceStartTime.get(sno);
+
+					System.out.println("Total elapsed http request/response time in milliseconds: " + tmp);
+
+					if (HttpGlobal.sceElapsedTime.get(sno) != null) {
+						HttpGlobal.sceElapsedTime.replace(sno, tmp);
+					} else {
+						HttpGlobal.sceElapsedTime.put(sno, tmp);
+					}
+
 					cookieTest = cookieValueTest(response);
 
 					if (status == 200) {
@@ -178,83 +189,17 @@ public class ClientHandler extends SimpleChannelInboundHandler<HttpObject> {
 						contentImageTest = false;
 					}
 
+					System.out.println("Total Time" + HttpGlobal.sceElapsedTime.get(sno));
+
 					if (status == 200) {
-						StuServerInfo stuVal = new StuServerInfo(this.student.getSname(), this.student.getSno(), this.student.getSip(), this.student.getSport(),
+						StuServerInfo stuVal = new StuServerInfo(this.student.getSname(), sno, this.student.getSip(), this.student.getSport(),
 								connTest, multiThread, errorTest200, errorTest404,
-								errorTest400, contentLengthTest, contentHtmlTest, contentImageTest, cookieTest);
+								errorTest400, contentLengthTest, contentHtmlTest, contentImageTest, cookieTest, HttpGlobal.sceElapsedTime.get(sno));
 
 						stuVal.toString();
 
 						HttpGlobal.stuInfo.put(this.student.getSno(), stuVal);
 					}
-
-//					long lTime = System.currentTimeMillis();
-//
-//					SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//
-//					StuServerInfo userInfo = HttpGlobal.stuInfo.get(student.getSno());
-//
-//					String str = dayTime.format(new Date(lTime));
-//					int cnt = 0;
-//
-//					int checkScore = 0;
-//
-//					if(cnt == 0) {
-//
-//						if(userInfo.isConnTest()) {
-//							checkScore += 10;
-//							System.out.println(1);
-//						}
-//						if(userInfo.isMultiThread()) {
-//							checkScore += 10;
-//							System.out.println(2);
-//
-//						}
-//
-//						if(userInfo.isErrorTest200()) {
-//							System.out.println(3);
-//
-//							checkScore += 10;
-//						}
-//
-//						if(userInfo.isErrorTest404()) {
-//							System.out.println(4);
-//
-//							checkScore += 10;
-//						}
-//
-//						if(userInfo.isErrorTest400()) {
-//							System.out.println(5);
-//
-//							checkScore += 10;
-//						}
-//
-//						if(userInfo.isContentLengthTest()) {
-//							System.out.println(6);
-//
-//							checkScore += 10;
-//						}
-//
-//						if(userInfo.isContentHtmlTest()) {
-//							System.out.println(7);
-//
-//							checkScore += 10;
-//						}
-//
-//						if(userInfo.isContentImageTest()) {
-//							System.out.println(8);
-//							checkScore += 10;
-//						}
-//
-//						if(userInfo.isCookieTest()) {
-//							System.out.println(9);
-//							checkScore += 10;
-//						}
-//					}
-//
-//					String score = String.valueOf(checkScore);
-//
-//					System.out.println("################# score :" + score + "      time  :  " + str);
 
 					break;
 
