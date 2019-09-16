@@ -1,7 +1,12 @@
-# 자동 채점 웹 프로그램 (Backend, Spring boot)
+## 졸업 프로젝트 : 자동 채점 웹 프로그램 구현 (Backend, Spring boot)
 
-졸업 프로젝트로 사용자의 프로그램을 평가하고 문제점 및 성능을 피드백해주는 자동 채점 웹 프로그램을 구현했습니다.
-CoAP Server, Web Server, Web Client를 서버에 구현하여 사용자의 프로그램에 대한 성능을 평가합니다.
+### 목표
+
+1. 사용자의 프로그램을 평가하고 문제점 및 성능을 피드백해주는 자동 채점 웹 프로그램을 구현
+
+2. CoAP Server, Web Server, Web Client 테스트
+
+3. 테스트 결과를 DB에 저장
 
 ### 개발환경
 
