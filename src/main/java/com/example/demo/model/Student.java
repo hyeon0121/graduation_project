@@ -1,5 +1,8 @@
 package com.example.demo.model;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("student")
 public class Student {
     String sname;
     String sno;
