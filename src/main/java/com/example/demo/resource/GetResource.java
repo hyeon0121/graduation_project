@@ -7,10 +7,13 @@ import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Random;
 
 public class GetResource extends CoapResource {
+
+    @Value("${my.ip}") private String myip;
 
     public GetResource(String name) {
         super(name);
@@ -23,7 +26,11 @@ public class GetResource extends CoapResource {
             System.out.println("GET TEST");
             System.out.println("====================");
 
+
+            int port = CoAPGlobal.port;
+
             String url = CoAPGlobal.setUrl();
+
             JSONObject json = new JSONObject();
 
             Random generator = new Random();

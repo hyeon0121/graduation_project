@@ -7,12 +7,14 @@ import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.net.SocketException;
 import java.util.Random;
 
 public class PostResource extends CoapResource {
-	
+	@Value("${my.ip}") private String myip;
+
 	public PostResource(String name) {
 		super(name);
 	}
@@ -27,7 +29,10 @@ public class PostResource extends CoapResource {
 				CoAPGlobal.methodScore -= 20;
 			}
 
-			String url = CoAPGlobal.setUrl();
+
+			int port = CoAPGlobal.port;
+
+            String url = CoAPGlobal.setUrl();
 
 			Random generator = new Random();
 
@@ -85,10 +90,12 @@ public class PostResource extends CoapResource {
 
 			exchange.respond(ResponseCode.CONTENT, payload , MediaTypeRegistry.APPLICATION_JSON);
 			
-		} catch (JSONException | SocketException e) {
+		} catch (JSONException e) {
 			exchange.respond(ResponseCode.BAD_REQUEST, "Wrong Access");
-		}
-	
+		} catch (SocketException e) {
+            e.printStackTrace();
+        }
 
-	}
+
+    }
 }

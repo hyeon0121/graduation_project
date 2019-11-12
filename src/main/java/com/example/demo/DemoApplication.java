@@ -1,5 +1,4 @@
 package com.example.demo;
-
 import com.example.demo.global.DeviceInfo;
 import com.example.demo.global.CoAPGlobal;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -9,10 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.test.context.TestPropertySource;
 
 import javax.sql.DataSource;
 
 @MapperScan(value={"com.example.demo.mapper"})
+@TestPropertySource(locations="classpath:application.properties")
 @SpringBootApplication
 public class DemoApplication {
 
@@ -61,5 +62,4 @@ public class DemoApplication {
 
 		return sessionFactory.getObject();
 	}
-
 }

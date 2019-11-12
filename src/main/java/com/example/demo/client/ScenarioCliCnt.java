@@ -35,7 +35,7 @@ public class ScenarioCliCnt extends Thread {
 						HttpGlobal.statusMap.put(student.getSip(), i);
 
 						httpClient.start();
-						
+
 						try {
 							sleep(100);
 

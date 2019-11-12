@@ -1,17 +1,19 @@
 package com.example.demo.resource;
 
 import com.example.demo.global.CoAPGlobal;
-import com.oracle.javafx.jmx.json.JSONException;
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.server.resources.CoapExchange;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.net.SocketException;
 import java.util.Random;
 
 public class DeleteResource extends CoapResource {
+    @Value("${my.ip}") private String myip;
 
     public DeleteResource(String name) {
         super(name);
@@ -29,7 +31,10 @@ public class DeleteResource extends CoapResource {
             System.out.println("DELETE TEST");
             System.out.println("====================");
 
+            int port = CoAPGlobal.port;
+
             String url = CoAPGlobal.setUrl();
+
             Random generator = new Random();
 
             JSONObject json = new JSONObject();
@@ -73,8 +78,10 @@ public class DeleteResource extends CoapResource {
             exchange.getRequestCode();
 
             exchange.respond(CoAP.ResponseCode.CONTENT, payload, MediaTypeRegistry.APPLICATION_JSON);
-        } catch (JSONException | org.json.JSONException | SocketException e) {
+        } catch (JSONException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (SocketException e) {
             e.printStackTrace();
         }
     }

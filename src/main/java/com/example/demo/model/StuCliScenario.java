@@ -15,6 +15,12 @@ public class StuCliScenario extends Student {
         this.accessTime = accessTime;
     }
 
+    public StuCliScenario(String sname, String sno, String sip, String sport, String postAnswer, Date accessTime) {
+        super(sname, sno, sip, sport);
+        this.postAnswer = postAnswer;
+        this.accessTime = accessTime;
+    }
+
     public String getGetAnswer() {
         return getAnswer;
     }
@@ -61,5 +67,21 @@ public class StuCliScenario extends Student {
 
     public void setAccessTime(Date accessTime) {
         this.accessTime = accessTime;
+    }
+
+    @Override
+    public String toString() {
+        return "StuCliScenario{" +
+                "getAnswer='" + getAnswer + '\'' +
+                ", postAnswer='" + postAnswer + '\'' +
+                ", httpCheck=" + httpCheck +
+                ", httpVersion=" + httpVersion +
+                ", userAgent=" + userAgent +
+                ", accessTime=" + accessTime +
+                ", sname='" + sname + '\'' +
+                ", sno='" + sno + '\'' +
+                ", sip='" + sip + '\'' +
+                ", sport='" + sport + '\'' +
+                '}';
     }
 }

@@ -8,7 +8,6 @@ import com.example.demo.global.CoAPGlobal;
 public class CoAPServerBase {
 
 	public CoAPServerBase() {
-		
 		CoapServer server = new CoapServer();
 		
 		server.add(new ConnectResource("connect"));

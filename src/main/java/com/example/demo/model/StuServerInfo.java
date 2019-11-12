@@ -2,11 +2,15 @@ package com.example.demo.model;
 
 import org.apache.ibatis.type.Alias;
 
+import java.util.Date;
+
 @Alias("web_server_scenario")
 public class StuServerInfo extends Student {
+    int id;
     boolean connTest, multiThread, errorTest200, errorTest404, errorTest400, contentLengthTest, contentHtmlTest,
             contentImageTest, cookieTest;
     long elapsedTime;
+    String date;
 
     public StuServerInfo(String sname, String sno, String sip, String sport, boolean connTest, boolean multiThread, boolean errorTest200, boolean errorTest404, boolean errorTest400, boolean contentLengthTest, boolean contentHtmlTest, boolean contentImageTest, boolean cookieTest, long elapsedTime) {
         super(sname, sno, sip, sport);
@@ -20,6 +24,20 @@ public class StuServerInfo extends Student {
         this.contentImageTest = contentImageTest;
         this.cookieTest = cookieTest;
         this.elapsedTime = elapsedTime;
+    }
+
+    public StuServerInfo(int id, String sname, String sno, String sip, String sport, boolean connTest, boolean multiThread, boolean errorTest200, boolean errorTest404, boolean errorTest400, boolean contentLengthTest, boolean contentHtmlTest, boolean contentImageTest, boolean cookieTest) {
+        super(sname, sno, sip, sport);
+        this.id = id;
+        this.connTest = connTest;
+        this.multiThread = multiThread;
+        this.errorTest200 = errorTest200;
+        this.errorTest404 = errorTest404;
+        this.errorTest400 = errorTest400;
+        this.contentLengthTest = contentLengthTest;
+        this.contentHtmlTest = contentHtmlTest;
+        this.contentImageTest = contentImageTest;
+        this.cookieTest = cookieTest;
     }
 
     public boolean isConnTest() {
@@ -100,6 +118,14 @@ public class StuServerInfo extends Student {
 
     public void setElapsedTime(long elapsedTime) {
         this.elapsedTime = elapsedTime;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     @Override

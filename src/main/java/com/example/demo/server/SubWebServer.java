@@ -2,7 +2,6 @@ package com.example.demo.server;
 
 import com.example.demo.model.Student;
 import com.sun.net.httpserver.HttpServer;
-//import org.apache.http.impl.bootstrap.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -35,9 +34,9 @@ public class SubWebServer {
 		try {
 			server = HttpServer.create(new InetSocketAddress(this.port), 0);
 
-			server.createContext("/scenarioTest", new SubWebServerHandler.scenarioHandler(getAnswer, student));
-			server.createContext("/getHandleTest", new SubWebServerHandler.getHandler(getAnswer, student));
-			server.createContext("/postHandleTest", new SubWebServerHandler.postHandler(student));
+			server.createContext("/scenarioGetTest", new SubWebServerHandler.scenarioGetHandler(getAnswer, student));
+			server.createContext("/scenarioPostTest", new SubWebServerHandler.scenarioPostHandler(student));
+			server.createContext("/unitHandleTest", new SubWebServerHandler.unitHandler(student));
 
 			server.start();
 

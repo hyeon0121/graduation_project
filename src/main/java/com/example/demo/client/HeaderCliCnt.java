@@ -3,9 +3,13 @@ package com.example.demo.client;
 import com.example.demo.global.HttpGlobal;
 import com.example.demo.model.Student;
 
+import java.util.HashMap;
+
 public class HeaderCliCnt extends Thread {
     HeaderHttpClient httpClient;
     Student student;
+
+    public static HashMap<String, Integer> statusMap = new HashMap<>();
 
     public HeaderCliCnt(Student student) {
         this.student = student;
@@ -28,11 +32,11 @@ public class HeaderCliCnt extends Thread {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            if (HttpGlobal.statusMap.get(student.getSip()) != null) {
-                if (HttpGlobal.statusMap.get(student.getSip()) == 1) {
+            if (statusMap.get(student.getSip()) != null) {
+                if (statusMap.get(student.getSip()) == 1) {
                     for (int i = 1; i < 4; i++) {
                         httpClient = new HeaderHttpClient(student,i);
-                        HttpGlobal.statusMap.put(student.getSip(), i);
+                        statusMap.put(student.getSip(), i);
 
                         httpClient.start();
 

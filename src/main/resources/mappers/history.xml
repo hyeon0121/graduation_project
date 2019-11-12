@@ -5,9 +5,44 @@
 
 <mapper namespace="com.example.demo.mapper.HistoryMapper">
 
-    <insert id="insertHistory" parameterType="com.example.demo.model.History">
+    <resultMap  id="resultWebServer" type="com.example.demo.model.StuServerInfoDAO">
+        <result property="connTest" column="connect_test" javaType="java.lang.Boolean"/>
+        <result property="multiThread" column="multi_thread" javaType="java.lang.Boolean"/>
+        <result property="errorTest200" column="errortest200" javaType="java.lang.Boolean"/>
+        <result property="errorTest404" column="errortest404" javaType="java.lang.Boolean"/>
+        <result property="errorTest400" column="errortest400" javaType="java.lang.Boolean"/>
+        <result property="contentLengthTest" column="content_length" javaType="java.lang.Boolean"/>
+        <result property="contentHtmlTest" column="content_html" javaType="java.lang.Boolean"/>
+        <result property="contentImageTest" column="content_image" javaType="java.lang.Boolean"/>
+        <result property="cookieTest" column="cookie_test" javaType="java.lang.Boolean"/>
+        <result property="elapsedTime" column="elapsed_time" javaType="java.lang.Long"/>
+    </resultMap>
+
+    <insert id="insertHistory" parameterType="com.example.demo.model.StuCoAPScenario">
         INSERT INTO history (sno, sname, sip, sport, msg_score, max_score)
         VALUES (#{sno}, #{sname}, #{sip}, #{sport}, #{msgScore}, #{maxScore})
     </insert>
 
+    <insert id="insertWebServerSce" parameterType="com.example.demo.model.StuServerInfo">
+        INSERT INTO web_server_scenario (student_name, student_number, student_ip, student_port,
+        connect_test, multi_thread, errortest200, errortest404, errortest400,
+        content_length, content_html, content_image, cookie_test, date, elapsed_time)
+        VALUES (#{sname}, #{sno}, #{sip}, #{sport}, #{connTest}, #{multiThread}, #{errorTest200}, #{errorTest404}, #{errorTest400},
+        #{contentLengthTest}, #{contentHtmlTest}, #{contentImageTest}, #{cookieTest}, #{date}, #{elapsedTime})
+    </insert>
+
+    <select id="selectWebServerSce" parameterType="String" resultMap="resultWebServer">
+        SELECT connect_test, multi_thread, errortest200, errortest404, errortest400, content_length,
+        content_html, content_image, cookie_test, date, elapsed_time
+        FROM web_server_scenario
+        WHERE student_number=#{sno}
+    </select>
+
+    <insert id="insertWebClientSce" parameterType="com.example.demo.model.StuCliScore">
+        INSERT INTO web_client_scenario (student_name, student_number, student_ip, student_port,
+        http_check, http_version, user_agent, get_score, post_score, date)
+        VALUES (#{sname}, #{sno}, #{sip}, #{sport}, #{httpCheck}, #{httpVersion}, #{userAgent}, #{getScore}, #{postScore}, #{date})
+    </insert>
+
 </mapper>
+

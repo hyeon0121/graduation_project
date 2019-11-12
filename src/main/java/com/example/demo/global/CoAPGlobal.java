@@ -7,6 +7,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 
 import org.eclipse.californium.core.CoapResource;
+import org.springframework.beans.factory.annotation.Value;
 
 
 public class CoAPGlobal {

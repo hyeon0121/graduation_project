@@ -8,7 +8,11 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponse;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 
 public class ClientScenarioHandler extends SimpleChannelInboundHandler<HttpObject> {
 	Calendar calendar = Calendar.getInstance();
@@ -27,14 +31,21 @@ public class ClientScenarioHandler extends SimpleChannelInboundHandler<HttpObjec
 	private static boolean cookieTest = false;
 
 	public ClientScenarioHandler(Student student, String hostIP, int index) {
+		System.out.println("### handler test : " + student + " : " + hostIP +" : " + index);
 		this.student = student;
 		this.hostIP= hostIP;
 		this.itemIndex = index;
 	}
 
 	@Override
-	public void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
+	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		System.out.println("active");
+		super.channelActive(ctx);
 
+	}
+
+	@Override
+	public void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
 		if (msg instanceof HttpResponse) {
 			HttpResponse response = (HttpResponse) msg;
 
@@ -71,7 +82,6 @@ public class ClientScenarioHandler extends SimpleChannelInboundHandler<HttpObjec
 
 					} else {
 						connTest = false;
-
 					}
 					break;
 				// MultiThread
@@ -195,6 +205,11 @@ public class ClientScenarioHandler extends SimpleChannelInboundHandler<HttpObjec
 						StuServerInfo stuVal = new StuServerInfo(this.student.getSname(), sno, this.student.getSip(), this.student.getSport(),
 								connTest, multiThread, errorTest200, errorTest404,
 								errorTest400, contentLengthTest, contentHtmlTest, contentImageTest, cookieTest, HttpGlobal.sceElapsedTime.get(sno));
+
+						// 테스트 완료 시간 설정
+						DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd kk:mm");
+						Date d = new Date();
+						stuVal.setDate(formatter.format(d));
 
 						stuVal.toString();
 
