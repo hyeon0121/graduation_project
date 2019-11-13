@@ -71,8 +71,10 @@
 		<!-- MySQL -->
 		<dependency>
 			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<artifactId>mysql-connector-java-bin</artifactId>
 			<version>5.1.47</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/mysql-connector-java-5.1.46-bin.jar</systemPath>
 		</dependency>
 
 		<dependency>
