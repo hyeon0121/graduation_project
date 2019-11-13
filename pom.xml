@@ -19,6 +19,14 @@
 		<java.version>1.8</java.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>local-repository</id>
+			<name>local repository</name>
+			<url>file://${project.basedir}/libs</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -71,11 +79,10 @@
 		<!-- MySQL -->
 		<dependency>
 			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java-bin</artifactId>
+			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.46</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/libs/mysql-connector-java-5.1.46-bin.jar</systemPath>
 		</dependency>
+
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -97,6 +104,16 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<version>5.1.8.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-autoconfigure</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-autoconfigure</artifactId>
+			<version>2.0.1</version>
 		</dependency>
 	</dependencies>
 

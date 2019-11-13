@@ -4,6 +4,7 @@ import com.example.demo.global.CoAPGlobal;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -58,6 +59,7 @@ public class DemoApplication {
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource)throws Exception{
 		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);
+		sessionFactory.setVfs(SpringBootVFS.class);
 		sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mappers/*.xml"));
 
 		return sessionFactory.getObject();

@@ -9,35 +9,22 @@ import com.example.demo.global.HttpGlobal;
 import com.example.demo.server.StaticHandler;
 import com.example.demo.server.SubWebServer;
 import com.example.demo.service.HistoryService;
-import com.example.demo.service.ServerScenarioService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 
 @CrossOrigin
 @RestController
@@ -53,9 +40,6 @@ public class MainController {
 
     @Autowired
     private HistoryService historyService;
-
-    @Autowired
-    private ServerScenarioService serverScenarioService;
 
     // 웹 서버 테스트
     @RequestMapping(value = "/web_server", method = RequestMethod.POST)
