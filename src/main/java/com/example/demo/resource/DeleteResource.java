@@ -33,7 +33,8 @@ public class DeleteResource extends CoapResource {
 
             int port = CoAPGlobal.port;
 
-            String url = CoAPGlobal.setUrl();
+//            String url = CoAPGlobal.setUrl();
+            String url = "coap://" + myip +":"+port;
 
             Random generator = new Random();
 
@@ -80,8 +81,6 @@ public class DeleteResource extends CoapResource {
             exchange.respond(CoAP.ResponseCode.CONTENT, payload, MediaTypeRegistry.APPLICATION_JSON);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SocketException e) {
             e.printStackTrace();
         }
     }

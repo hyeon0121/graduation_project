@@ -32,7 +32,9 @@ public class PostResource extends CoapResource {
 
 			int port = CoAPGlobal.port;
 
-            String url = CoAPGlobal.setUrl();
+//            String url = CoAPGlobal.setUrl();
+
+			String url = "coap://" + myip +":"+port;
 
 			Random generator = new Random();
 
@@ -92,10 +94,7 @@ public class PostResource extends CoapResource {
 			
 		} catch (JSONException e) {
 			exchange.respond(ResponseCode.BAD_REQUEST, "Wrong Access");
-		} catch (SocketException e) {
-            e.printStackTrace();
-        }
-
+		}
 
     }
 }

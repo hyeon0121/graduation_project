@@ -29,7 +29,8 @@ public class GetResource extends CoapResource {
 
             int port = CoAPGlobal.port;
 
-            String url = CoAPGlobal.setUrl();
+//            String url = CoAPGlobal.setUrl();
+            String url = "coap://" + myip +":"+port;
 
             JSONObject json = new JSONObject();
 

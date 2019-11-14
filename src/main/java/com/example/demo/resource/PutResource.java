@@ -31,8 +31,8 @@ public class PutResource extends CoapResource {
 
             int port = CoAPGlobal.port;
 
-//            String url = "coap://" + myip +":"+port;
-            String url = CoAPGlobal.setUrl();
+            String url = "coap://" + myip +":"+port;
+//            String url = CoAPGlobal.setUrl();
             Random generator = new Random();
 
             JSONObject parsedObject = new JSONObject(exchange.getRequestText());
@@ -89,8 +89,6 @@ public class PutResource extends CoapResource {
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SocketException e) {
             e.printStackTrace();
         }
 

@@ -355,11 +355,10 @@ public class MainController {
         InetAddress ip;
 
         try {
-            ip = InetAddress.getLocalHost();
-            url = "http://" + ip.getHostAddress()+":"+port+"/scenarioGetTest";
+            url = "http://" + myip+":"+port+"/scenarioGetTest";
             System.out.println(url);
 
-        } catch (UnknownHostException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -391,11 +390,10 @@ public class MainController {
         InetAddress ip;
 
         try {
-            ip = InetAddress.getLocalHost();
-            url = "http://" + ip.getHostAddress()+":"+port+"/scenarioPostTest";
+            url = "http://" + myip +":"+port+"/scenarioPostTest";
             System.out.println(url);
 
-        } catch (UnknownHostException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -573,11 +571,10 @@ public class MainController {
         InetAddress ip;
 
         try {
-            ip = InetAddress.getLocalHost();
-            url = "http://" + ip.getHostAddress()+":"+port+"/unittHandleTest";
+            url = "http://" + myip +":"+port+"/unittHandleTest";
             System.out.println(url);
 
-        } catch (UnknownHostException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -718,7 +715,10 @@ public class MainController {
 
         int port = CoAPGlobal.port;
 
-        String url = CoAPGlobal.setUrl() + "/get";
+
+
+//        String url = CoAPGlobal.setUrl() + "/get";
+        String url = "coap://" + myip +":"+port + "/get";
         JSONObject json = new JSONObject();
         json.put("url", url);
 
@@ -767,7 +767,8 @@ public class MainController {
     public  ResponseEntity<Object> getConnectURL() throws JSONException, SocketException {
         int port = CoAPGlobal.port;
 
-        String url = CoAPGlobal.setUrl() + "/connect";
+//        String url = CoAPGlobal.setUrl() + "/connect";
+        String url = "coap://" + myip +":"+port + "/connect";
         JSONObject json = new JSONObject();
         json.put("url", url);
 
@@ -781,7 +782,9 @@ public class MainController {
 
         int port = CoAPGlobal.port;
 
-        String url = CoAPGlobal.setUrl()+"/obs/" + CoAPGlobal.deviceId;
+//        String url = CoAPGlobal.setUrl()+"/obs/" + CoAPGlobal.deviceId;
+
+        String url = "coap://" + myip +":"+port +"/obs/" + CoAPGlobal.deviceId;
 
         Random generator = new Random();
 
