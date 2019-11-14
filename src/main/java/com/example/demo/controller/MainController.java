@@ -133,10 +133,8 @@ public class MainController {
                 json.put("cookieTest", userInfo.isCookieTest());
                 json.put("elapsedTime", userInfo.getElapsedTime());
 
-                //serverScenarioService.insertStuServerInfo(userInfo);
-
                 // Web Server Scenario Test result insert in db
-                //historyService.insertWebServerSce(userInfo);
+                historyService.insertWebServerSce(userInfo);
 
                 return ResponseEntity.ok()
                         .body(json.toString());
@@ -827,12 +825,14 @@ public class MainController {
 
     @RequestMapping(value = "/score", method = RequestMethod.POST)
     @ResponseBody
-    public  ResponseEntity<String> insertTestResult(@RequestBody StuCoAPScenario history) {
+    public  ResponseEntity<String> insertTestResult(@RequestBody StuCoAPScenario history) throws Exception {
 
         System.out.println(history.toString());
 
-        //historyService.insertHistory(history);
-        System.out.println(LocalDateTime.now());
+        if (history != null) {
+            historyService.insertHistory(history);
+            System.out.println(LocalDateTime.now());
+        }
 
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
