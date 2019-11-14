@@ -34,7 +34,7 @@ public class PostResource extends CoapResource {
 
 //            String url = CoAPGlobal.setUrl();
 
-			String url = "coap://" + myip +":"+port;
+			String url = "coap://13.124.138.84"  +":"+port;
 
 			Random generator = new Random();
 

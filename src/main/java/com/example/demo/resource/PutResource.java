@@ -31,7 +31,7 @@ public class PutResource extends CoapResource {
 
             int port = CoAPGlobal.port;
 
-            String url = "coap://" + myip +":"+port;
+            String url = "coap://13.124.138.84"  +":"+port;
 //            String url = CoAPGlobal.setUrl();
             Random generator = new Random();
 
